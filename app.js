@@ -15,15 +15,28 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
 var User = require('./models/User');
+var fs = require('fs');
 
 var app = express();
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/starnet', {
+// Read .env content manually
+const secretPath = '/etc/secrets/MONGODB_URI';
+
+let mongoURI = '';
+if (fs.existsSync(secretPath)) {
+  mongoURI = fs.readFileSync(secretPath, 'utf8').trim();
+} else {
+  console.error('MongoDB secret file not found!');
+  process.exit(1);
+}
+
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+})
+.then(() => console.log('✅ Connected to MongoDB Atlas'))
+.catch(err => console.error('❌ Could not connect to MongoDB:', err));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
