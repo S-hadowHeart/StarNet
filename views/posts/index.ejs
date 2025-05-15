@@ -1,0 +1,28 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-4xl mx-auto mt-10 px-4">
+  <h1 class="text-2xl font-bold text-staryellow mb-6">All Posts</h1>
+  <% if (posts && posts.length > 0) { %>
+    <% posts.forEach(post => { %>
+      <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 mb-6">
+        <div class="flex items-center mb-4">
+          <img src="<%= post.author && post.author.profilePicture && post.author.profilePicture.trim() !== '' && post.author.profilePicture !== '/images/default-avatar.png' ? post.author.profilePicture : '/images/default-avatar.png' %>" alt="<%= post.author ? post.author.username : 'User' %>" class="w-10 h-10 rounded-full mr-3">
+          <a href="/profile/<%= post.author ? post.author._id : '' %>" class="text-staryellow hover:text-cosmicpink font-semibold">
+            <%= post.author ? post.author.username : 'Unknown' %>
+          </a>
+        </div>
+        <h2 class="text-xl text-staryellow font-semibold mb-2"><%= post.title || 'Untitled' %></h2>
+        <p class="text-startext mb-4"><%= post.content %></p>
+        <a href="/posts/<%= post._id %>" class="text-nebula hover:text-cosmicpink">View post</a>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div class="bg-deep rounded-xl p-8 shadow-lg border border-purple-800 text-center">
+      <h2 class="text-xl font-bold text-staryellow mb-3">🚀 No posts yet</h2>
+      <p class="text-slate-300 mb-4">Be the first to share something amazing from the stars!</p>
+      <a href="/posts/new" class="px-5 py-2 bg-nebula text-white font-semibold rounded hover:bg-purple-700 transition">Create Post</a>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %> 

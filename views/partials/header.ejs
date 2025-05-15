@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#0a0a1a] text-[#e2e8f0]">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= typeof title !== 'undefined' ? title : 'StarNet 🌌' %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              galaxy: '#0a0a1a',
+              nebula: '#8b5cf6',
+              staryellow: '#fbbf24',
+              startext: '#e2e8f0',
+              cosmicpink: '#ec4899',
+              deep: '#1e1b4b'
+            },
+            fontFamily: {
+              space: ['Orbitron', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-image: 
+          radial-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 40px),
+          radial-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 30px),
+          radial-gradient(rgba(96, 165, 250, 0.08) 2px, transparent 40px);
+        background-size: 550px 550px, 350px 350px, 250px 250px;
+        background-position: 0 0, 40px 60px, 130px 270px;
+      }
+    </style>
+    <script>
+      // Function to hide flash messages after 3 seconds
+      function hideFlashMessages() {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(message => {
+          setTimeout(() => {
+            message.style.opacity = '0';
+            setTimeout(() => message.remove(), 300); // Remove after fade out
+          }, 3000);
+        });
+      }
+      
+      // Run when DOM is loaded
+      document.addEventListener('DOMContentLoaded', hideFlashMessages);
+    </script>
+  </head>
+  <body class="min-h-screen font-space">
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-galaxy to-deep p-4 shadow-lg border-b border-purple-800 flex justify-between items-center">
+      <a href="/" class="text-transparent bg-clip-text bg-gradient-to-r from-staryellow to-cosmicpink text-2xl font-bold tracking-wide flex items-center gap-2">
+        <span>✨</span>
+        <span>StarNet</span>
+      </a>
+      <% if (typeof hideNav === 'undefined' || !hideNav) { %>
+      <div class="flex gap-3">
+        <a href="/" class="text-startext hover:text-cosmicpink">Mission Control</a>
+        <a href="/explore" class="text-startext hover:text-cosmicpink">Cosmic Explorer</a>
+        <% if(currentUser) { %>
+          <a href="/posts/new" class="text-startext hover:text-cosmicpink">Launch Signal</a>
+          <a href="/profile/<%= currentUser._id %>" class="text-startext hover:text-cosmicpink">Command Center</a>
+          <form action="/logout" method="POST" class="inline">
+            <button type="submit" class="px-3 py-1 border border-purple-500 text-startext rounded hover:bg-purple-700">Eject</button>
+          </form>
+        <% } else { %>
+          <a href="/login" class="px-3 py-1 border border-purple-500 text-startext rounded hover:bg-purple-700">Dock</a>
+          <a href="/signup" class="px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700">Join Fleet</a>
+        <% } %>
+      </div>
+      <% } %>
+    </nav>
+    <!-- Flash Messages (centered, below navbar) -->
+    <% if(typeof success !== 'undefined' && success.length > 0) { %>
+      <div class="flash-message mx-auto mt-4 w-fit bg-gradient-to-r from-nebula to-purple-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300 text-center border border-purple-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+          <%= success[0] %>
+        </div>
+      </div>
+    <% } else if(typeof error !== 'undefined' && error.length > 0) { %>
+      <div class="flash-message mx-auto mt-4 w-fit bg-gradient-to-r from-red-900 to-red-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-300 text-center border border-red-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4M12 16h.01"/>
+          </svg>
+          <%= error[0] %>
+        </div>
+      </div>
+    <% } %>
+  </body>
+</html> 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#0a0a1a] text-[#e2e8f0]">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= post.title %> | StarNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              galaxy: '#0a0a1a',
+              nebula: '#8b5cf6',
+              staryellow: '#fbbf24',
+              startext: '#e2e8f0',
+              cosmicpink: '#ec4899',
+              deep: '#1e1b4b'
+            },
+            fontFamily: {
+              space: ['Orbitron', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-space p-6">
+
+    <div class="max-w-3xl mx-auto bg-deep p-6 rounded-xl border border-purple-800 shadow-lg">
+      <h1 class="text-3xl font-bold text-staryellow mb-2"><%= post.title %></h1>
+      <div class="text-sm text-slate-400 mb-4">
+        Transmitted by <a href="/user/<%= post.author %>" class="text-blue-400 hover:text-pink-400">Commander <%= post.author %></a>
+        • Transmission received: <%= new Date(post.createdAt).toLocaleString() %>
+      </div>
+      <p class="text-startext text-lg mb-6"><%= post.content %></p>
+
+      <form action="/post/<%= post._id %>/like" method="POST" class="mb-6">
+        <button type="submit" class="inline-flex items-center bg-gradient-to-r from-nebula to-cosmicpink text-white px-4 py-2 rounded hover:opacity-90">
+          ⭐ Acknowledge <span class="ml-2 font-semibold"><%= post.votes || 0 %></span>
+        </button>
+      </form>
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-10 bg-deep p-6 rounded-xl border border-purple-800 shadow-lg">
+      <h2 class="text-xl font-bold text-staryellow mb-4">📡 Response Signals</h2>
+
+      <% if (comments.length > 0) { %>
+        <% comments.forEach(comment => { %>
+          <div class="border-b border-purple-800 pb-3 mb-3">
+            <p class="text-startext"><%= comment.text %></p>
+            <div class="text-sm text-slate-400 mt-1">
+              — <a href="/user/<%= comment.username %>" class="text-blue-400 hover:text-pink-400"><%= comment.username %></a>, 
+              <%= new Date(comment.createdAt).toLocaleString() %>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-slate-400">No comments yet. Be the first to share your thoughts.</p>
+      <% } %>
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-10 bg-deep p-6 rounded-xl border border-purple-800 shadow-lg">
+      <h3 class="text-lg font-bold text-staryellow mb-4">Add a Comment 🌠</h3>
+      <form action="/post/<%= post._id %>/comment" method="POST">
+        <textarea name="text" required rows="4" placeholder="Share your thoughts..."
+          class="w-full p-3 bg-[#1e1b4b] text-startext border border-purple-700 rounded-lg placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-nebula mb-4"></textarea>
+        <button type="submit" class="bg-gradient-to-r from-nebula to-cosmicpink text-white font-semibold px-6 py-2 rounded hover:opacity-90">Comment</button>
+      </form>
+    </div>
+
+  </body>
+</html>

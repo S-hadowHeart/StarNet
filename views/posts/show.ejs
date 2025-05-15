@@ -1,0 +1,90 @@
+<%- include('../partials/header') %>
+
+<div class="max-w-4xl mx-auto mt-10 px-4">
+  <!-- Post -->
+  <article class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 mb-8">
+    <div class="flex items-center mb-4">
+      <img src="<%= post.author.profilePicture && post.author.profilePicture.trim() !== '' ? post.author.profilePicture : '/images/default-profile.png' %>" alt="<%= post.author.username %>" class="w-12 h-12 rounded-full mr-3">
+      <div>
+        <a href="/profile/<%= post.author._id %>" class="text-staryellow hover:text-cosmicpink font-semibold text-lg">
+          Commander <%= post.author.username %>
+        </a>
+        <p class="text-sm text-slate-400">Transmission Date: <%= new Date(post.createdAt).toLocaleDateString() %></p>
+      </div>
+    </div>
+    
+    <h1 class="text-2xl font-bold text-staryellow mb-4"><%= post.title %></h1>
+    <p class="text-startext text-lg mb-4"><%= post.content %></p>
+    
+    <% if(post.image) { %>
+      <img src="<%= post.image %>" alt="Cosmic image" class="rounded-lg mb-4 max-h-96 w-full object-cover">
+    <% } %>
+    
+    <div class="flex items-center gap-4 text-sm mb-6">
+      <form action="/posts/<%= post._id %>/like" method="POST" class="inline">
+        <button type="submit" class="flex items-center gap-1 text-slate-400 hover:text-cosmicpink">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="<%= post.likes.includes(currentUser?._id) ? '#ec4899' : 'none' %>" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <%= post.likes.length %> Quantum Resonances
+        </button>
+      </form>
+      <span class="text-slate-400"><%= post.comments.length %> Cosmic Echoes</span>
+    </div>
+    
+    <% if(currentUser && post.author._id.equals(currentUser._id)) { %>
+      <div class="flex gap-4 mb-6">
+        <a href="/posts/<%= post._id %>/edit" class="text-nebula hover:text-cosmicpink">Modify Transmission</a>
+        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" class="inline">
+          <button type="submit" class="text-red-400 hover:text-red-300">Terminate Signal</button>
+        </form>
+      </div>
+    <% } %>
+  </article>
+  
+  <!-- Comments -->
+  <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800">
+    <h2 class="text-xl font-bold text-staryellow mb-6">Cosmic Echoes</h2>
+    
+    <% if(currentUser) { %>
+      <form action="/posts/<%= post._id %>/comments" method="POST" class="mb-8">
+        <div class="flex gap-4">
+          <textarea name="content" required rows="2" placeholder="Send your cosmic echo..."
+            class="flex-1 px-4 py-2 bg-galaxy border border-purple-700 rounded-lg focus:outline-none focus:border-cosmicpink text-startext resize-none"></textarea>
+          <button type="submit" 
+            class="px-4 py-2 bg-nebula text-white font-semibold rounded-lg hover:bg-purple-700 transition self-end">
+            Transmit Echo
+          </button>
+        </div>
+      </form>
+    <% } %>
+    
+    <div class="space-y-4">
+      <% if(post.comments.length > 0) { %>
+        <% post.comments.forEach(comment => { %>
+          <div class="bg-galaxy rounded-lg p-4">
+            <div class="flex items-center mb-2">
+              <img src="<%= comment.author.profilePicture && comment.author.profilePicture.trim() !== '' ? comment.author.profilePicture : '/images/default-profile.png' %>" alt="<%= comment.author.username %>" class="w-8 h-8 rounded-full mr-2">
+              <div>
+                <a href="/profile/<%= comment.author._id %>" class="text-staryellow hover:text-cosmicpink font-semibold">
+                  Commander <%= comment.author.username %>
+                </a>
+                <p class="text-xs text-slate-400">Echo Date: <%= new Date(comment.createdAt).toLocaleDateString() %></p>
+              </div>
+            </div>
+            <p class="text-startext"><%= comment.content %></p>
+            <% if(currentUser && comment.author._id.equals(currentUser._id)) { %>
+              <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="mt-2">
+                <button type="submit" class="text-sm text-red-400 hover:text-red-300">Delete Echo</button>
+              </form>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-center text-slate-400">No cosmic echoes yet. Be the first to respond to this transmission!</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %> 

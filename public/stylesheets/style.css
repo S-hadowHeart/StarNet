@@ -1,0 +1,268 @@
+:root {
+  --space-black: #0a0a1a;
+  --cosmic-purple: #8b5cf6;
+  --nebula-pink: #ec4899;
+  --star-yellow: #fbbf24;
+  --galaxy-blue: #60a5fa;
+  --deep-space: #1e1b4b;
+  --card-bg: rgba(30, 27, 75, 0.95);
+  --container-bg: rgba(30, 27, 75, 0.98);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(139, 92, 246, 0.2);
+}
+
+body {
+  background-color: var(--space-black);
+  background-image: 
+    radial-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 40px),
+    radial-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 30px),
+    radial-gradient(rgba(96, 165, 250, 0.08) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.container {
+  background: var(--container-bg) !important;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.3);
+  padding: 2rem 2.5rem;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: var(--text-primary);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.hero-section {
+  position: relative;
+  padding: 4rem 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--space-black) 60%, var(--deep-space) 100%);
+  color: var(--text-primary);
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+}
+
+.hero-section h1 {
+  background: linear-gradient(45deg, var(--star-yellow), var(--nebula-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--star-yellow);
+  letter-spacing: 0.5px;
+}
+
+p, span, li, .post-meta, .vote-count, .btn, .form-control, .list-group-item {
+  color: var(--text-primary) !important;
+}
+
+a {
+  color: var(--galaxy-blue);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--nebula-pink);
+}
+
+.navbar {
+  background: linear-gradient(90deg, var(--space-black), var(--deep-space));
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--cosmic-purple), var(--nebula-pink));
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: var(--text-primary);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, var(--nebula-pink), var(--cosmic-purple));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.btn-outline-light {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: var(--star-yellow);
+  transform: translateY(-1px);
+}
+
+.post-title {
+  color: var(--star-yellow);
+  font-weight: 600;
+}
+
+.post-meta {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.vote-button {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--galaxy-blue);
+  transition: all 0.2s ease;
+}
+
+.vote-button:hover {
+  background: rgba(96, 165, 250, 0.1);
+  color: var(--star-yellow);
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+.vote-count {
+  color: var(--star-yellow);
+  font-weight: 600;
+  min-width: 24px;
+}
+
+.comment-section {
+  background: rgba(139, 92, 246, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.form-control {
+  background: rgba(30, 27, 75, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px;
+}
+
+.form-control:focus {
+  background: rgba(30, 27, 75, 0.95);
+  border-color: var(--cosmic-purple);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.25);
+}
+
+.list-group-item {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+  background: rgba(139, 92, 246, 0.1) !important;
+  color: var(--star-yellow) !important;
+  transform: translateX(5px);
+  border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--space-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cosmic-purple);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nebula-pink);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+  z-index: -1;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(var(--cosmic-purple), rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    radial-gradient(var(--nebula-pink), rgba(236, 72, 153, 0.08) 1px, transparent 1px),
+    radial-gradient(var(--galaxy-blue), rgba(96, 165, 250, 0.06) 1px, transparent 1px);
+  background-size: 50px 50px, 100px 100px, 150px 150px;
+  background-position: 0 0, 25px 25px, 50px 50px;
+  animation: twinkle 4s ease-in-out infinite;
+  z-index: -1;
+}
+
+/* FINAL ENFORCEMENT: Remove all white backgrounds from Bootstrap or inline styles */
+body .container,
+body .card,
+body .card-body,
+body .bg-white,
+body .bg-light,
+body .bg-body,
+body .list-group-item,
+body .modal-content,
+body [style*="background: #fff"],
+body [style*="background-color: #fff"],
+body [style*="background: white"],
+body [style*="background-color: white"] {
+  background: var(--container-bg) !important;
+  background-color: var(--container-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.3) !important;
+}

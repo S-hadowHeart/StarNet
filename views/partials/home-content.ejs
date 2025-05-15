@@ -1,0 +1,166 @@
+<div class="hero-section mb-5 text-center">
+  <h1 class="display-4 mb-3">Welcome to StarNet</h1>
+  <p class="lead text-light mb-4">Your gateway to the cosmic network. Share and discover transmissions across the universe.</p>
+  <div class="d-flex justify-content-center gap-3">
+    <a href="/submit" class="btn btn-primary btn-lg">
+      <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      Launch Transmission
+    </a>
+    <a href="/explore" class="btn btn-outline-light btn-lg">
+      <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      Navigate Cosmos
+    </a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="h4 mb-0">Recent Transmissions</h2>
+      <div class="btn-group">
+        <button class="btn btn-outline-light active">Latest Signals</button>
+        <button class="btn btn-outline-light">Strong Signals</button>
+        <button class="btn btn-outline-light">Priority Signals</button>
+      </div>
+    </div>
+
+    <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+      <% posts.forEach(function(post) { %>
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+              <div class="vote-buttons me-3 d-flex flex-column align-items-center">
+                <button class="vote-button btn btn-sm mb-1">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                  </svg>
+                </button>
+                <span class="vote-count text-center"><%= post.votes || 0 %></span>
+                <button class="vote-button btn btn-sm mt-1">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="flex-grow-1">
+                <h5 class="post-title mb-1">
+                  <a href="/post/<%= post._id %>" class="text-decoration-none"><%= post.title %></a>
+                </h5>
+                <div class="post-meta">
+                  Posted by <a href="/user/<%= post.author %>" class="text-decoration-none"><%= post.author %></a>
+                  in <a href="/r/<%= post.community %>" class="text-decoration-none">r/<%= post.community %></a>
+                  • <%= new Date(post.createdAt).toLocaleDateString() %>
+                </div>
+              </div>
+            </div>
+            <p class="card-text"><%= post.content %></p>
+            <div class="d-flex align-items-center">
+              <a href="/post/<%= post._id %>" class="btn btn-sm btn-outline-light me-2">
+                <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <%= post.comments ? post.comments.length : 0 %> Comments
+              </a>
+              <button class="btn btn-sm btn-outline-light">
+                <svg class="me-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                  <polyline points="16 6 12 2 8 6"/>
+                  <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="text-center py-5">
+        <div class="floating mb-4">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--cosmic-purple)" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 16v-4M12 8h.01"/>
+          </svg>
+        </div>
+        <h3 class="text-light mb-3">No posts yet</h3>
+        <p class="text-muted mb-4">Be the first to share something amazing!</p>
+        <a href="/submit" class="btn btn-primary btn-lg">
+          <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Launch Transmission
+        </a>
+      </div>
+    <% } %>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">About StarNet</h5>
+        <p class="card-text">Your gateway to the cosmic network. Share and discover transmissions across the universe.</p>
+        <a href="/submit" class="btn btn-primary w-100">Launch Transmission</a>
+      </div>
+    </div>
+    
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Active Sectors</h5>
+        <div class="list-group list-group-flush">
+          <a href="/r/astronomy" class="list-group-item list-group-item-action bg-transparent text-light border-light">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cosmic-purple)" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+              </div>
+              <div>
+                <div class="fw-bold">Sector Astronomy</div>
+                <small class="text-muted">1.2M vessels</small>
+              </div>
+            </div>
+          </a>
+          <a href="/r/space" class="list-group-item list-group-item-action bg-transparent text-light border-light">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--galaxy-blue)" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+              </div>
+              <div>
+                <div class="fw-bold">Sector Space</div>
+                <small class="text-muted">2.5M vessels</small>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Space News</h5>
+        <div class="list-group list-group-flush">
+          <a href="#" class="list-group-item list-group-item-action bg-transparent text-light border-light">
+            <small class="text-muted">2 hours ago</small>
+            <div class="fw-bold">New Exoplanet Discovery</div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent text-light border-light">
+            <small class="text-muted">5 hours ago</small>
+            <div class="fw-bold">SpaceX Launch Success</div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent text-light border-light">
+            <small class="text-muted">1 day ago</small>
+            <div class="fw-bold">James Webb Telescope Update</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

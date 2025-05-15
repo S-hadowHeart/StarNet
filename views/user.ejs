@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#0a0a1a] text-[#e2e8f0]">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= username %> | StarNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              galaxy: '#0a0a1a',
+              nebula: '#8b5cf6',
+              staryellow: '#fbbf24',
+              startext: '#e2e8f0',
+              cosmicpink: '#ec4899',
+              deep: '#1e1b4b'
+            },
+            fontFamily: {
+              space: ['Orbitron', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-space px-4 py-10">
+    <h1 class="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-staryellow to-cosmicpink mb-8">Commander <%= username %>'s Transmissions 🌠</h1>
+
+    <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% if (posts.length > 0) { %>
+        <% posts.forEach(post => { %>
+          <div class="bg-deep p-6 rounded-xl border border-purple-800 shadow hover:shadow-lg transition">
+            <h2 class="text-xl text-staryellow font-semibold mb-2"><%= post.title %></h2>
+            <p class="text-slate-300 mb-4"><%= post.content.substring(0, 100) %>...</p>
+            <div class="text-sm text-slate-400 mb-2">Signal Strength: <%= post.votes %></div>
+            <a href="/post/<%= post._id %>" class="text-purple-400 hover:text-cosmicpink text-sm">Decode Full Transmission →</a>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-center text-slate-400 col-span-full">No transmissions detected from this commander.</p>
+      <% } %>
+    </div>
+  </body>
+</html>

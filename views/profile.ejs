@@ -1,0 +1,231 @@
+<%- include('partials/header') %>
+
+<div class="max-w-4xl mx-auto mt-10 px-4">
+  <!-- Profile Header -->
+  <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 mb-8">
+    <div class="flex items-center gap-6">
+      <img src="<%= user.profilePicture && user.profilePicture.trim() !== '' ? user.profilePicture : '/images/default-profile.png' %>" alt="<%= user.username %>" class="w-24 h-24 rounded-full border-2 border-purple-500">
+      <div class="flex-1">
+        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-staryellow to-cosmicpink mb-2">
+          Commander <%= user.username %>
+        </h1>
+        <p class="text-startext mb-4"><%= user.bio || 'No mission log yet' %></p>
+        <div class="flex gap-6 text-sm">
+          <button onclick="toggleFollowersList()" class="text-slate-400 hover:text-staryellow">
+            <span class="font-semibold text-startext"><%= user.followers.length %></span> Fleet Members
+          </button>
+          <button onclick="toggleFollowingList()" class="text-slate-400 hover:text-staryellow">
+            <span class="font-semibold text-startext"><%= user.following.length %></span> Allied Vessels
+          </button>
+        </div>
+      </div>
+      <% if(currentUser && !currentUser._id.equals(user._id)) { %>
+        <form action="/follow/<%= user._id %>" method="POST" class="follow-form">
+          <button type="submit" 
+            class="follow-button px-4 py-2 <%= user.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'bg-galaxy border border-purple-500' : 'bg-nebula' %> text-white font-semibold rounded-lg hover:bg-purple-700 transition">
+            <%= user.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'Disconnect' : 'Connect' %>
+          </button>
+        </form>
+      <% } %>
+      <% if(currentUser && currentUser._id.equals(user._id)) { %>
+        <button onclick="document.getElementById('editProfileModal').classList.remove('hidden')"
+          class="px-4 py-2 border border-purple-500 text-startext rounded-lg hover:bg-purple-700">
+          Update Mission Log
+        </button>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Followers Modal -->
+  <div id="followersModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-staryellow">Fleet Members</h2>
+        <button onclick="toggleFollowersList()" class="text-slate-400 hover:text-staryellow">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="space-y-4 max-h-96 overflow-y-auto">
+        <% if(user.followers.length > 0) { %>
+          <% user.followers.forEach(follower => { %>
+            <div class="flex items-center justify-between p-2 hover:bg-galaxy rounded-lg">
+              <div class="flex items-center gap-3">
+                <img src="<%= follower.profilePicture && follower.profilePicture.trim() !== '' ? follower.profilePicture : '/images/default-profile.png' %>" 
+                  alt="<%= follower.username %>" 
+                  class="w-10 h-10 rounded-full">
+                <a href="/profile/<%= follower._id %>" class="text-startext hover:text-staryellow">
+                  Commander <%= follower.username %>
+                </a>
+              </div>
+              <% if(currentUser && !currentUser._id.equals(follower._id)) { %>
+                <form action="/follow/<%= follower._id %>" method="POST" class="follow-form">
+                  <button type="submit" 
+                    class="follow-button px-3 py-1 text-sm <%= follower.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'bg-galaxy border border-purple-500' : 'bg-nebula' %> text-white font-semibold rounded hover:bg-purple-700 transition">
+                    <%= follower.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'Disconnect' : 'Connect' %>
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-slate-400 text-center py-4">No fleet members yet</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Following Modal -->
+  <div id="followingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-staryellow">Allied Vessels</h2>
+        <button onclick="toggleFollowingList()" class="text-slate-400 hover:text-staryellow">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="space-y-4 max-h-96 overflow-y-auto">
+        <% if(user.following.length > 0) { %>
+          <% user.following.forEach(following => { %>
+            <div class="flex items-center justify-between p-2 hover:bg-galaxy rounded-lg">
+              <div class="flex items-center gap-3">
+                <img src="<%= following.profilePicture && following.profilePicture.trim() !== '' ? following.profilePicture : '/images/default-profile.png' %>" 
+                  alt="<%= following.username %>" 
+                  class="w-10 h-10 rounded-full">
+                <a href="/profile/<%= following._id %>" class="text-startext hover:text-staryellow">
+                  Commander <%= following.username %>
+                </a>
+              </div>
+              <% if(currentUser && !currentUser._id.equals(following._id)) { %>
+                <form action="/follow/<%= following._id %>" method="POST" class="follow-form">
+                  <button type="submit" 
+                    class="follow-button px-3 py-1 text-sm <%= following.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'bg-galaxy border border-purple-500' : 'bg-nebula' %> text-white font-semibold rounded hover:bg-purple-700 transition">
+                    <%= following.followers.map(f=>f.toString()).includes(currentUser._id.toString()) ? 'Disconnect' : 'Connect' %>
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-slate-400 text-center py-4">No allied vessels yet</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <% if(currentUser && currentUser._id.equals(user._id)) { %>
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+      <div class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800 w-full max-w-md">
+        <h2 class="text-xl font-bold text-staryellow mb-4">Update Mission Log</h2>
+        <form action="/profile/<%= user._id %>?_method=PUT" method="POST" class="space-y-4">
+          <div>
+            <label for="bio" class="block text-startext mb-2">Mission Log</label>
+            <textarea id="bio" name="bio" rows="3"
+              class="w-full px-4 py-2 bg-galaxy border border-purple-700 rounded-lg focus:outline-none focus:border-cosmicpink text-startext resize-none"
+              placeholder="Record your cosmic journey..."><%= user.bio %></textarea>
+          </div>
+          <div class="flex justify-end gap-4">
+            <button type="button" onclick="document.getElementById('editProfileModal').classList.add('hidden')"
+              class="px-4 py-2 border border-purple-500 text-startext rounded-lg hover:bg-purple-700">
+              Abort
+            </button>
+            <button type="submit" 
+              class="px-4 py-2 bg-nebula text-white font-semibold rounded-lg hover:bg-purple-700 transition">
+              Update Log
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Posts -->
+  <div class="space-y-6">
+    <h2 class="text-xl font-bold text-staryellow mb-4">Transmissions</h2>
+    <% if(posts && posts.length > 0) { %>
+      <% posts.forEach(post => { %>
+        <article class="bg-deep rounded-xl p-6 shadow-lg border border-purple-800">
+          <p class="text-startext mb-4"><%= post.content %></p>
+          <% if(post.image) { %>
+            <img src="<%= post.image %>" alt="Cosmic image" class="rounded-lg mb-4 max-h-96 w-full object-cover">
+          <% } %>
+          <div class="flex items-center gap-4 text-sm">
+            <form action="/posts/<%= post._id %>/like" method="POST" class="inline">
+              <button type="submit" class="flex items-center gap-1 text-slate-400 hover:text-cosmicpink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="<%= post.likes.includes(currentUser?._id) ? '#ec4899' : 'none' %>" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <%= post.likes.length %> Quantum Resonances
+              </button>
+            </form>
+            <span class="text-slate-400"><%= post.comments.length %> Cosmic Echoes</span>
+            <a href="/posts/<%= post._id %>" class="text-nebula hover:text-cosmicpink">View Transmission</a>
+          </div>
+        </article>
+      <% }) %>
+    <% } else { %>
+      <div class="bg-deep rounded-xl p-8 shadow-lg border border-purple-800 text-center">
+        <p class="text-slate-400">No transmissions yet.</p>
+        <% if(currentUser && currentUser._id.equals(user._id)) { %>
+          <a href="/posts/new" class="inline-block mt-4 px-5 py-2 bg-nebula text-white font-semibold rounded hover:bg-purple-700 transition">Launch Signal</a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+  function toggleFollowersList() {
+    const modal = document.getElementById('followersModal');
+    modal.classList.toggle('hidden');
+  }
+
+  function toggleFollowingList() {
+    const modal = document.getElementById('followingModal');
+    modal.classList.toggle('hidden');
+  }
+
+  // Handle follow/unfollow button clicks
+  document.querySelectorAll('.follow-form').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector('.follow-button');
+      const isFollowing = button.textContent.trim() === 'Disconnect';
+      
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          // Update button state
+          if (isFollowing) {
+            button.textContent = 'Connect';
+            button.classList.remove('bg-galaxy', 'border', 'border-purple-500');
+            button.classList.add('bg-nebula');
+          } else {
+            button.textContent = 'Disconnect';
+            button.classList.remove('bg-nebula');
+            button.classList.add('bg-galaxy', 'border', 'border-purple-500');
+          }
+          
+          // Update follower count
+          const followerCount = document.querySelector('button:first-of-type span');
+          const currentCount = parseInt(followerCount.textContent);
+          followerCount.textContent = isFollowing ? currentCount - 1 : currentCount + 1;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  });
+</script> 
